@@ -303,7 +303,7 @@ func (p *PriceFetcher) FetchOrderData(client *pester.Client, baseURL string, reg
 				url := fmt.Sprintf("%s/markets/%d/orders/?datasource=tranquility&order_type=all&page=%d", baseURL, regionID, page)
 				hasMore, err := requestAndProcess(false, url)
 				if err != nil {
-					errChannel <- fmt.Errorf("Failed to fetch market orders: %s (%s)", err, url)
+					errChannel <- fmt.Errorf("failed to fetch market orders: %s (%s)", err, url)
 					return
 				}
 
@@ -330,7 +330,7 @@ func (p *PriceFetcher) FetchOrderData(client *pester.Client, baseURL string, reg
 				url := fmt.Sprintf("%s/markets/structures/%d?datasource=tranquility&page=%d", baseURL, structureID, page)
 				hasMore, err := requestAndProcess(true, url)
 				if err != nil {
-					errChannel <- fmt.Errorf("Failed to fetch structure market orders: %s (%s)", err, url)
+					errChannel <- fmt.Errorf("failed to fetch structure market orders: %s (%s)", err, url)
 					return
 				}
 				if !hasMore {
@@ -350,7 +350,7 @@ func (p *PriceFetcher) FetchOrderData(client *pester.Client, baseURL string, reg
 	case <-finished:
 	case <-p.stop:
 		close(workerStop)
-		return nil, errors.New("Stopping during price fetch")
+		return nil, errors.New("stopping during price fetch")
 	case err := <-errChannel:
 		if err != nil {
 			close(workerStop)

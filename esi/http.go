@@ -1,12 +1,13 @@
 package esi
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"github.com/go-redis/redis/v7"
@@ -43,8 +44,10 @@ func (h *HTTPHelp) FetchURL(needauth bool, url string, r interface{}) error {
 		}
 		req.Header.Add("User-Agent", "pubkraal/go-evepraisal")
 
+		var authToken string
+
 		if needauth {
-			authToken, err := h.getAccessToken()
+			authToken, err = h.getAccessToken()
 			if err != nil {
 				log.Printf("Error getting access token: %s", err)
 				rerr := h.refreshAuth()
@@ -58,6 +61,7 @@ func (h *HTTPHelp) FetchURL(needauth bool, url string, r interface{}) error {
 		}
 		resp, err := h.client.Do(req.WithContext(h.ctx))
 		if err != nil {
+			fmt.Println("error with request:", err, authToken)
 			return err
 		}
 		defer resp.Body.Close()
@@ -68,6 +72,16 @@ func (h *HTTPHelp) FetchURL(needauth bool, url string, r interface{}) error {
 			return err
 		case 404:
 			return nil
+		case 500:
+			// This is not how it should be, but if you request a
+			// 404 on authenticated endpoints you get a 500 instead
+			// with this body:
+			//
+			// {"error": "Undefined 404 response. Original message: Requested page does not exist!"}
+			//
+			// I know right?!
+			// I could do some checking here, but I cannot be arsed. Just bail out
+			return nil
 		case 403:
 			if needauth {
 				err := h.refreshAuth()
@@ -75,13 +89,13 @@ func (h *HTTPHelp) FetchURL(needauth bool, url string, r interface{}) error {
 					return err
 				}
 			} else {
-				return fmt.Errorf("Error talking to esi: %s", resp.Status)
+				return fmt.Errorf("error talking to esi: %s", resp.Status)
 			}
 		default:
-			return fmt.Errorf("Error talking to esi: %s", resp.Status)
+			return fmt.Errorf("error talking to esi: %s", resp.Status)
 		}
 	}
-	return fmt.Errorf("Hit end of loop")
+	return fmt.Errorf("hit end of loop")
 }
 
 func (h *HTTPHelp) refreshAuth() error {
@@ -90,18 +104,20 @@ func (h *HTTPHelp) refreshAuth() error {
 		return err
 	}
 
-	requestBody, err := json.Marshal(map[string]string{
-		"grant_type":    "refresh_token",
-		"refresh_token": refreshToken,
-	})
+	postValues := url.Values{}
+	postValues.Set("grant_type", "refresh_token")
+	postValues.Set("refresh_token", refreshToken)
+
+	requestBody := postValues.Encode()
+
 	if err != nil {
 		return err
 	}
 
 	req, err := http.NewRequest(
 		"POST",
-		"https://login.eveonline.com/oauth/token",
-		bytes.NewBuffer(requestBody))
+		"https://login.eveonline.com/v2/oauth/token",
+		strings.NewReader(requestBody))
 	if err != nil {
 		return err
 	}
@@ -113,10 +129,11 @@ func (h *HTTPHelp) refreshAuth() error {
 
 	req.Header.Add("User-Agent", "pubkraal/go-evepraisal")
 	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", APIAuth))
-	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := h.client.Do(req.WithContext(h.ctx))
 	if err != nil {
+		fmt.Println("issues with refresh", err, req.Header)
 		return err
 	}
 	defer resp.Body.Close()
@@ -125,12 +142,12 @@ func (h *HTTPHelp) refreshAuth() error {
 	case 200:
 		// nothing, normal flow continues below.
 	case 400:
-		return fmt.Errorf("Refresh token rejected. Clearing local data")
+		return fmt.Errorf("refresh token rejected. Clearing local data")
 	case 401:
 		_ = h.redis.Del("evepraisal_apiauth").Err()
 		return fmt.Errorf("API auth rejected. Clearing local data")
 	default:
-		return fmt.Errorf("Error talking to esi: %s", resp.Status)
+		return fmt.Errorf("error talking to esi: %s", resp.Status)
 	}
 
 	newToken := &tokenResponse{}
