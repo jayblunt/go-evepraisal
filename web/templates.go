@@ -47,6 +47,7 @@ type namedThing struct {
 
 var selectableMarkets = []namedThing{
 	{Name: "1DQ1-A", DisplayName: "1DQ1-A"},
+	{Name: "B17O-R", DisplayName: "B17O-R"},
 	{Name: "jita", DisplayName: "Jita"},
 	{Name: "universe", DisplayName: "Universe"},
 	{Name: "amarr", DisplayName: "Amarr"},
