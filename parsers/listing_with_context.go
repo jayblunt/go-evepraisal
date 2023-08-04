@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/pubkraal/go-evepraisal/typedb"
+	"github.com/jayblunt/go-evepraisal/typedb"
 )
 
 // ContextListingParser is a parser which uses the typeDB to help parse a listing

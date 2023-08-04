@@ -5,14 +5,15 @@ import (
 
 	"golang.org/x/oauth2"
 
-	"github.com/pubkraal/go-evepraisal"
 	"github.com/gorilla/sessions"
+	"github.com/jayblunt/go-evepraisal"
 )
 
 // Context contains all of the 'global' app context for the HTTP app
 type Context struct {
 	App                 *evepraisal.App
 	BaseURL             string
+	SiteName            string
 	ExtraJS             string
 	ExtraHTMLHeader     string
 	AdBlock             string

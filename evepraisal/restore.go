@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pubkraal/go-evepraisal"
-	"github.com/pubkraal/go-evepraisal/legacy"
-	"github.com/pubkraal/go-evepraisal/staticdump"
-	"github.com/pubkraal/go-evepraisal/typedb"
+	"github.com/jayblunt/go-evepraisal"
+	"github.com/jayblunt/go-evepraisal/legacy"
+	"github.com/jayblunt/go-evepraisal/staticdump"
+	"github.com/jayblunt/go-evepraisal/typedb"
 	"github.com/sethgrid/pester"
 	"github.com/spf13/viper"
 )

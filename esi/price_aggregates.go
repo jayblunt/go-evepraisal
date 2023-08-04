@@ -6,7 +6,7 @@ import (
 	"github.com/gonum/floats"
 	"github.com/gonum/stat"
 
-	"github.com/pubkraal/go-evepraisal"
+	"github.com/jayblunt/go-evepraisal"
 )
 
 func nanToZero(f float64) float64 {

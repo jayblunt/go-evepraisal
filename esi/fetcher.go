@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v7"
-	"github.com/pubkraal/go-evepraisal"
+	"github.com/jayblunt/go-evepraisal"
 	"github.com/sethgrid/pester"
 )
 
@@ -39,37 +39,37 @@ var SpecialRegions = []struct {
 	regionID int64
 	private  bool
 }{
-	{
-		regionID: 10000060,
-		name:     "1DQ1-A",
-		stations: []int64{1030049082711},
-		private:  true,
-	},
-	{
-		regionID: 10000058,
-		name:     "B17O-R",
-		stations: []int64{1036948142847},
-		private:  true,
-	},
+	// {
+	// 	regionID: 10000060,
+	// 	name:     "1DQ1-A",
+	// 	stations: []int64{1030049082711},
+	// 	private:  true,
+	// },
+	// {
+	// 	regionID: 10000058,
+	// 	name:     "B17O-R",
+	// 	stations: []int64{1036948142847},
+	// 	private:  true,
+	// },
 	{
 		regionID: 10000002,
-		name:     "jita",
+		name:     "Jita",
 		systems:  []int64{30000142},
 	}, {
 		regionID: 10000043,
-		name:     "amarr",
+		name:     "Amarr",
 		stations: []int64{60008950, 60002569, 60008494},
 	}, {
 		regionID: 10000032,
-		name:     "dodixie",
+		name:     "Dodixie",
 		stations: []int64{60011866, 60001867},
 	}, {
 		regionID: 10000042,
-		name:     "hek",
+		name:     "Hek",
 		stations: []int64{60005236, 60004516, 60015140, 60005686, 60011287, 60005236},
 	}, {
 		regionID: 10000030,
-		name:     "rens",
+		name:     "Rens",
 		systems:  []int64{30002510, 30002526},
 	},
 }
@@ -104,8 +104,8 @@ func NewPriceFetcher(ctx context.Context, priceDB evepraisal.PriceDB, baseURL st
 		structureMap: make(map[int64]int64),
 	}
 
-	p.structureMap[1030049082711] = 30004759
-	p.structureMap[1036948142847] = 30004590
+	// p.structureMap[1030049082711] = 30004759
+	// p.structureMap[1036948142847] = 30004590
 
 	p.wg.Add(1)
 	go func() {
@@ -142,7 +142,7 @@ func regionNames() []string {
 
 func (p *PriceFetcher) runOnce() {
 	log.Println("Fetch market data")
-	priceMap, err := p.FetchOrderData(p.client, p.baseURL, []int{10000002, 10000042, 10000027, 10000032, 10000043, 10000030, 10000058, 10000060}, []int{1030049082711, 1036948142847})
+	priceMap, err := p.FetchOrderData(p.client, p.baseURL, []int{10000002, 10000042, 10000027, 10000032, 10000043, 10000030, 10000058, 10000060}, []int{})
 	if err != nil {
 		log.Println("ERROR: fetching market data: ", err)
 		return

@@ -16,15 +16,15 @@ import (
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 	"github.com/gregjones/httpcache"
+	"github.com/jayblunt/go-evepraisal"
+	"github.com/jayblunt/go-evepraisal/bolt"
+	"github.com/jayblunt/go-evepraisal/esi"
+	"github.com/jayblunt/go-evepraisal/management"
+	"github.com/jayblunt/go-evepraisal/parsers"
+	"github.com/jayblunt/go-evepraisal/staticdump"
+	"github.com/jayblunt/go-evepraisal/typedb"
+	"github.com/jayblunt/go-evepraisal/web"
 	newrelic "github.com/newrelic/go-agent"
-	"github.com/pubkraal/go-evepraisal"
-	"github.com/pubkraal/go-evepraisal/bolt"
-	"github.com/pubkraal/go-evepraisal/esi"
-	"github.com/pubkraal/go-evepraisal/management"
-	"github.com/pubkraal/go-evepraisal/parsers"
-	"github.com/pubkraal/go-evepraisal/staticdump"
-	"github.com/pubkraal/go-evepraisal/typedb"
-	"github.com/pubkraal/go-evepraisal/web"
 	"github.com/sethgrid/pester"
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/acme/autocert"
@@ -192,6 +192,7 @@ func appMain() {
 
 	webContext := web.NewContext(app)
 	webContext.BaseURL = strings.TrimSuffix(viper.GetString("base-url"), "/")
+	webContext.SiteName = viper.GetString("base-site-name")
 	webContext.ExtraHTMLHeader = viper.GetString("extra-html-header")
 	webContext.ExtraJS = viper.GetString("extra-js")
 	webContext.AdBlock = viper.GetString("ad-block")

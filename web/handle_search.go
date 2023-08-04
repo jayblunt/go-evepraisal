@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/pubkraal/go-evepraisal/typedb"
+	"github.com/jayblunt/go-evepraisal/typedb"
 )
 
 // SearchPage holds the search results to be rendered

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pubkraal/go-evepraisal/typedb"
+	"github.com/jayblunt/go-evepraisal/typedb"
 	"github.com/stretchr/testify/assert"
 )
 

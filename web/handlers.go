@@ -47,7 +47,7 @@ func (ctx *Context) HandleAbout(w http.ResponseWriter, r *http.Request) {
 	ctx.render(r, w, "about.html", nil)
 }
 
-// HandleAPIDocs is the handler for /api-docs
+// HandleAPIDocs is the handler for /about/api
 func (ctx *Context) HandleAPIDocs(w http.ResponseWriter, r *http.Request) {
 	ctx.render(r, w, "api.html", nil)
 }
@@ -120,9 +120,8 @@ func (ctx *Context) HTTPHandler() http.Handler {
 
 	// Misc
 	router.GetFunc("/legal", cors(ctx.HandleLegal))
-	router.GetFunc("/about", cors(ctx.HandleAbout))
-	router.GetFunc("/api-docs", cors(ctx.HandleAPIDocs))
 	router.GetFunc("/about/api", cors(ctx.HandleAPIDocs))
+	router.GetFunc("/about", cors(ctx.HandleAbout))
 	router.GetFunc("/robots.txt", cors(ctx.HandleRobots))
 	router.GetFunc("/favicon.ico", cors(ctx.HandleFavicon))
 

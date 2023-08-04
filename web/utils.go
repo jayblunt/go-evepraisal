@@ -4,7 +4,7 @@ import (
 	"math"
 
 	"github.com/dustin/go-humanize"
-	"github.com/pubkraal/go-evepraisal"
+	"github.com/jayblunt/go-evepraisal"
 	"github.com/leekchan/accounting"
 	"github.com/montanaflynn/stats"
 )

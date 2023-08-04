@@ -1,4 +1,4 @@
-module github.com/pubkraal/go-evepraisal
+module github.com/jayblunt/go-evepraisal
 
 require (
 	github.com/NYTimes/gziphandler v1.0.0
@@ -7,7 +7,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4
 	github.com/elazarl/go-bindata-assetfs v1.0.0
-	github.com/fsnotify/fsnotify v1.4.9
+	github.com/fsnotify/fsnotify v1.6.0
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/go-zoo/bone v0.0.0-20160911183509-fd0aebc74e90
 	github.com/golang/snappy v0.0.0-20170215233205-553a64147049
@@ -27,8 +27,8 @@ require (
 	github.com/pquerna/ffjson v0.0.0-20180717144149-af8b230fcd20
 	github.com/sethgrid/pester v0.0.0-20171127025028-760f8913c048
 	github.com/spf13/viper v0.0.0-20171227194143-aafc9e6bc7b7
-	github.com/stretchr/testify v1.4.0
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	github.com/stretchr/testify v1.7.0
+	golang.org/x/crypto v0.11.0
 	golang.org/x/oauth2 v0.0.0-20180104230036-30785a2c434e
 	gopkg.in/yaml.v2 v2.2.4
 )
@@ -72,10 +72,11 @@ require (
 	github.com/tecbot/gorocksdb v0.0.0-20180730101644-8b1d981498e1 // indirect
 	github.com/tinylib/msgp v1.0.2 // indirect
 	github.com/willf/bitset v1.1.3 // indirect
-	golang.org/x/net v0.0.0-20200625001655-4c5254603344 // indirect
-	golang.org/x/sys v0.0.0-20200828194041-157a740278f4 // indirect
-	golang.org/x/text v0.3.2 // indirect
+	golang.org/x/net v0.12.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/text v0.11.0 // indirect
 	google.golang.org/appengine v1.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
 
-go 1.17
+go 1.18

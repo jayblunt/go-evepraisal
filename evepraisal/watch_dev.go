@@ -1,3 +1,4 @@
+//go:build dev
 // +build dev
 
 package main
@@ -8,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pubkraal/go-evepraisal"
 	"github.com/fsnotify/fsnotify"
+	"github.com/jayblunt/go-evepraisal"
 )
 
 func startEnvironmentWatchers(app *evepraisal.App) {

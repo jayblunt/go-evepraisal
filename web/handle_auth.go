@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/pubkraal/go-evepraisal"
+	"github.com/jayblunt/go-evepraisal"
 
 	"golang.org/x/oauth2"
 )

@@ -11,8 +11,8 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/dustin/go-humanize"
+	"github.com/jayblunt/go-evepraisal"
 	"github.com/pquerna/ffjson/ffjson"
-	"github.com/pubkraal/go-evepraisal"
 )
 
 var spewConfig = spew.ConfigState{Indent: "    ", SortKeys: true}
@@ -46,14 +46,12 @@ type namedThing struct {
 }
 
 var selectableMarkets = []namedThing{
-	{Name: "1DQ1-A", DisplayName: "1DQ1-A"},
-	{Name: "B17O-R", DisplayName: "B17O-R"},
-	{Name: "jita", DisplayName: "Jita"},
+	{Name: "Jita", DisplayName: "Jita"},
 	{Name: "universe", DisplayName: "Universe"},
-	{Name: "amarr", DisplayName: "Amarr"},
-	{Name: "dodixie", DisplayName: "Dodixie"},
-	{Name: "hek", DisplayName: "Hek"},
-	{Name: "rens", DisplayName: "Rens"},
+	{Name: "Amarr", DisplayName: "Amarr"},
+	{Name: "Dodixie", DisplayName: "Dodixie"},
+	{Name: "Hek", DisplayName: "Hek"},
+	{Name: "Rens", DisplayName: "Rens"},
 }
 
 var selectableVisibilities = []namedThing{
@@ -73,6 +71,7 @@ type PageRoot struct {
 		ExpireAfter          string
 		BaseURL              string
 		BaseURLWithoutScheme string
+		SiteName             string
 		User                 *evepraisal.User
 		LoginEnabled         bool
 		RawTextAreaDefault   string
@@ -101,7 +100,7 @@ func (ctx *Context) renderWithRoot(r *http.Request, w http.ResponseWriter, templ
 		}
 	} else {
 		root.UI.Path = r.URL.Path
-		root.UI.SelectedMarket = ctx.getSessionValueWithDefault(r, "market", "1DQ1-A")
+		root.UI.SelectedMarket = ctx.getSessionValueWithDefault(r, "market", "Jita")
 		root.UI.Markets = selectableMarkets
 		root.UI.SelectedVisibility = ctx.getSessionValueWithDefault(r, "visibility", "public")
 		root.UI.Visibilities = selectableVisibilities
@@ -110,6 +109,7 @@ func (ctx *Context) renderWithRoot(r *http.Request, w http.ResponseWriter, templ
 		root.UI.ExpireAfter = ctx.getSessionValueWithDefault(r, "expire_after", "360h")
 		root.UI.BaseURLWithoutScheme = strings.TrimPrefix(strings.TrimPrefix(ctx.BaseURL, "https://"), "http://")
 		root.UI.BaseURL = ctx.BaseURL
+		root.UI.SiteName = ctx.SiteName
 		root.UI.FlashMessages = ctx.getFlashMessages(r, w)
 		if ctx.OauthConfig != nil {
 			root.UI.LoginEnabled = true

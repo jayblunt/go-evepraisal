@@ -1,8 +1,9 @@
+//go:build !dev
 // +build !dev
 
 package main
 
-import "github.com/pubkraal/go-evepraisal"
+import "github.com/jayblunt/go-evepraisal"
 
 func startEnvironmentWatchers(app *evepraisal.App) {
 }

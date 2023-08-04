@@ -3,10 +3,11 @@ https_addr=""
 management_addr="127.0.0.1:8090"
 http_redirect=false
 letsencrypt_email=""
-https_domain-whitelist=["evepraisal.com"]
+https_domain-whitelist=["evepraisal.castabouts.net"]
 redis_host="127.0.0.1:6379"
 
-base-url="http://127.0.0.1:8080"
+base-url="https://evepraisal.castabouts.net"
+base-site-name="CASpraisal"
 
 ad-block=""
 extra-js=""
