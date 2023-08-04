@@ -15,7 +15,6 @@ import (
 	"github.com/go-zoo/bone"
 	"github.com/gorilla/context"
 	accesslog "github.com/mash/go-accesslog"
-	newrelic "github.com/newrelic/go-agent"
 )
 
 // HandleIndex is the handler for /
@@ -162,14 +161,14 @@ func (ctx *Context) HTTPHandler() http.Handler {
 		ctx.renderErrorPage(r, w, http.StatusNotFound, "Not Found", "I couldn't find what you're looking for")
 	}))
 
-	if ctx.App.NewRelicApplication != nil {
-		for _, routes := range router.Routes {
-			for _, route := range routes {
-				_, h := newrelic.WrapHandle(ctx.App.NewRelicApplication, route.Path, route.Handler)
-				route.Handler = h
-			}
-		}
-	}
+	// if ctx.App.NewRelicApplication != nil {
+	// 	for _, routes := range router.Routes {
+	// 		for _, route := range routes {
+	// 			_, h := newrelic.WrapHandle(ctx.App.NewRelicApplication, route.Path, route.Handler)
+	// 			route.Handler = h
+	// 		}
+	// 	}
+	// }
 
 	mux := http.NewServeMux()
 	setStaticHeaders := func(h http.Handler) http.HandlerFunc {

@@ -23,7 +23,6 @@ require (
 	github.com/mash/go-accesslog v0.0.0-20171204044117-2504c70e272f
 	github.com/montanaflynn/stats v0.0.0-20151014174947-eeaced052adb
 	github.com/mssola/user_agent v0.4.1
-	github.com/newrelic/go-agent v2.0.0+incompatible
 	github.com/pquerna/ffjson v0.0.0-20180717144149-af8b230fcd20
 	github.com/sethgrid/pester v0.0.0-20171127025028-760f8913c048
 	github.com/spf13/viper v0.0.0-20171227194143-aafc9e6bc7b7

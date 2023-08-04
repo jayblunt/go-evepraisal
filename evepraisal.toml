@@ -15,8 +15,8 @@ extra-js=""
 db_path="db/"
 backup_path="db/backups/"
 
-newrelic_app-name="Evepraisal"
-newrelic_license-key=""
+# newrelic_app-name="Evepraisal"
+# newrelic_license-key=""
 
 esi_baseurl="https://esi.evetech.net/latest"
 sso-authorize-url="https://login.eveonline.com/oauth/authorize"

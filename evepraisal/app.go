@@ -24,7 +24,6 @@ import (
 	"github.com/jayblunt/go-evepraisal/staticdump"
 	"github.com/jayblunt/go-evepraisal/typedb"
 	"github.com/jayblunt/go-evepraisal/web"
-	newrelic "github.com/newrelic/go-agent"
 	"github.com/sethgrid/pester"
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/acme/autocert"
@@ -123,19 +122,19 @@ func appMain() {
 	staticdumpHTTPClient.MaxRetries = 2
 	staticdumpHTTPClient.LogHook = func(e pester.ErrEntry) { log.Println(httpClient.FormatError(e)) }
 
-	if viper.GetString("newrelic_license-key") != "" {
-		newRelicConfig := newrelic.NewConfig(viper.GetString("newrelic_app-name"), viper.GetString("newrelic_license-key"))
-		newRelicConfig.ErrorCollector.IgnoreStatusCodes = []int{400, 401, 404}
-		var newRelicApplication newrelic.Application
-		newRelicApplication, err = newrelic.NewApplication(newRelicConfig)
-		if err != nil {
-			log.Fatalf("Problem configuring new relic: %s", err)
-		}
+	// if viper.GetString("newrelic_license-key") != "" {
+	// 	newRelicConfig := newrelic.NewConfig(viper.GetString("newrelic_app-name"), viper.GetString("newrelic_license-key"))
+	// 	newRelicConfig.ErrorCollector.IgnoreStatusCodes = []int{400, 401, 404}
+	// 	var newRelicApplication newrelic.Application
+	// 	newRelicApplication, err = newrelic.NewApplication(newRelicConfig)
+	// 	if err != nil {
+	// 		log.Fatalf("Problem configuring new relic: %s", err)
+	// 	}
 
-		app.NewRelicApplication = newRelicApplication
-		httpClient.Transport = NewRoundTripper(newRelicApplication, httpClient.Transport)
-		staticdumpHTTPClient.Transport = NewRoundTripper(newRelicApplication, staticdumpHTTPClient.Transport)
-	}
+	// 	app.NewRelicApplication = newRelicApplication
+	// 	httpClient.Transport = NewRoundTripper(newRelicApplication, httpClient.Transport)
+	// 	staticdumpHTTPClient.Transport = NewRoundTripper(newRelicApplication, staticdumpHTTPClient.Transport)
+	// }
 
 	staticFetcher, err := staticdump.NewStaticFetcher(staticdumpHTTPClient, viper.GetString("db_path"), func(typeDB typedb.TypeDB) {
 		oldTypeDB := app.TypeDB
@@ -330,23 +329,23 @@ func mustStartServers(handler http.Handler) []*http.Server {
 	return servers
 }
 
-// NewRoundTripper returns an http.RoundTripper that is tooled for use in the app
-func NewRoundTripper(newrelicApp newrelic.Application, original http.RoundTripper) http.RoundTripper {
-	if original == nil {
-		original = http.DefaultTransport
-	}
+// // NewRoundTripper returns an http.RoundTripper that is tooled for use in the app
+// func NewRoundTripper(newrelicApp newrelic.Application, original http.RoundTripper) http.RoundTripper {
+// 	if original == nil {
+// 		original = http.DefaultTransport
+// 	}
 
-	return roundTripperFunc(func(request *http.Request) (*http.Response, error) {
-		txn := newrelicApp.StartTransaction("http", nil, nil)
-		segment := newrelic.StartExternalSegment(txn, request)
-		response, err := original.RoundTrip(request)
-		segment.Response = response
-		segment.End()
-		txn.End()
+// 	return roundTripperFunc(func(request *http.Request) (*http.Response, error) {
+// 		txn := newrelicApp.StartTransaction("http", nil, nil)
+// 		segment := newrelic.StartExternalSegment(txn, request)
+// 		response, err := original.RoundTrip(request)
+// 		segment.Response = response
+// 		segment.End()
+// 		txn.End()
 
-		return response, err
-	})
-}
+// 		return response, err
+// 	})
+// }
 
 type roundTripperFunc func(*http.Request) (*http.Response, error)
 
