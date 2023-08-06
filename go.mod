@@ -26,7 +26,7 @@ require (
 	github.com/pquerna/ffjson v0.0.0-20180717144149-af8b230fcd20
 	github.com/sethgrid/pester v0.0.0-20171127025028-760f8913c048
 	github.com/spf13/viper v0.0.0-20171227194143-aafc9e6bc7b7
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.8.3
 	golang.org/x/crypto v0.11.0
 	golang.org/x/oauth2 v0.0.0-20180104230036-30785a2c434e
 	gopkg.in/yaml.v2 v2.2.4
@@ -75,7 +75,7 @@ require (
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	google.golang.org/appengine v1.0.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 go 1.18
