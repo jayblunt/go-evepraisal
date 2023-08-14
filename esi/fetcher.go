@@ -13,6 +13,8 @@ import (
 	"github.com/sethgrid/pester"
 )
 
+const minPricingInterval = time.Duration(30)
+
 type ContextKey string
 
 // MarketOrder represents a market order in ESI
@@ -90,7 +92,7 @@ type PriceFetcher struct {
 }
 
 // NewPriceFetcher returns a new PriceFetcher
-func NewPriceFetcher(ctx context.Context, priceDB evepraisal.PriceDB, baseURL string, redisClient *redis.Client, client *pester.Client) (*PriceFetcher, error) {
+func NewPriceFetcher(ctx context.Context, priceDB evepraisal.PriceDB, baseURL string, pricingInterval time.Duration, redisClient *redis.Client, client *pester.Client) (*PriceFetcher, error) {
 	p := &PriceFetcher{
 		db:      priceDB,
 		client:  client,
@@ -106,6 +108,9 @@ func NewPriceFetcher(ctx context.Context, priceDB evepraisal.PriceDB, baseURL st
 
 	// p.structureMap[1030049082711] = 30004759
 	// p.structureMap[1036948142847] = 30004590
+	if pricingInterval < minPricingInterval {
+		pricingInterval = minPricingInterval
+	}
 
 	p.wg.Add(1)
 	go func() {
@@ -114,7 +119,7 @@ func NewPriceFetcher(ctx context.Context, priceDB evepraisal.PriceDB, baseURL st
 			start := time.Now()
 			p.runOnce()
 			select {
-			case <-time.After((6 * time.Minute) - time.Since(start)):
+			case <-time.After((pricingInterval * time.Minute) - time.Since(start)):
 			case <-p.stop:
 				return
 			}

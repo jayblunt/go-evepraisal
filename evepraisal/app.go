@@ -78,7 +78,7 @@ func appMain() {
 	}
 
 	fetcherCtx, fetcherCancel := context.WithCancel(context.Background())
-	priceFetcher, err := esi.NewPriceFetcher(fetcherCtx, priceDB, viper.GetString("esi_baseurl"), redisClient, httpClient)
+	priceFetcher, err := esi.NewPriceFetcher(fetcherCtx, priceDB, viper.GetString("esi_baseurl"), viper.GetDuration("esi_pricing_interval"), redisClient, httpClient)
 	if err != nil {
 		log.Fatalf("Couldn't start price fetcher: %s", err)
 	}
